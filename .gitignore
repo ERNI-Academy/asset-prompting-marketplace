@@ -1,0 +1,5 @@
+Gemfile.lock
+Gemfile
+.env
+_site/
+aida-prompts/.sass-cache/
