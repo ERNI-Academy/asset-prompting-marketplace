@@ -1,52 +1,47 @@
-# About {{ Name }}
+# AIDA Prompt Library
 
-ERNI Academy StarterKit, PoC, or Gidelines. This is an about description of your repository.
+A curated collection of AI prompts, easily searchable and shareable. Built with Jekyll and hosted on GitHub Pages.
 
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
+## Overview
 
-## Built With
-
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-
-- [Tools A](https://example.com)
-- [Framework B](https://example.com)
-- [Project C](https://example.com)
+This repository contains a collection of AI prompts that can be filtered by tags and easily copied to clipboard. Each prompt is stored as a markdown file with frontmatter metadata.
 
 ## Features
 
-- Be awesome
-- Make things faster
+- 🔍 Tag-based filtering
+- 📋 One-click prompt copying
+- 📱 Responsive design
+- 🎨 Clean, minimalist interface
 
-## Getting Started
+### Adding New Prompts
 
-This is an example of how you may give instructions on setting up your project locally. To get a local copy up and running follow these simple example steps.
+Create a new markdown file in the `_prompts` directory with the following format:
 
-## Prerequisites
+```markdown
+---
+title: "Prompt Title"
+author: 
+  name: "Author Name"
+  url: "https://optional-author-url.com"
+tags: [tag1, tag2]
+date: YYYY-MM-DD
+---
 
-This is an example of how to list things you need to use the software and how to install them.
+Your prompt content goes here
+```
 
-## Installation
+## Repository Structure
 
-Installation instructions {{ Name }} by running:
-
-1. Clone the repo
-
-   ```sh
-   git clone https://github.com/ERNI-Academy/Project-Name.git
-   ```
-
-2. Install packages
-
-    ```sh
-    npm install
-    ```
-
-3. Configure
-
-    ```JS
-    const API_KEY = 'ENTER YOUR API';
-    ```
+```
+.
+├── _layouts/
+│   └── default.html
+├── _prompts/
+│   └── *.md
+├── _config.yml
+├── index.md
+└── README.md
+```
 
 ## Contributing
 
@@ -56,7 +51,7 @@ Please see our [Contribution Guide](CONTRIBUTING.md) to learn how to contribute.
 
 ![MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
-(LICENSE) © {{Year}} [ERNI - Swiss Software Engineering](https://www.betterask.erni)
+(LICENSE) © 2024 [ERNI - Swiss Software Engineering](https://www.betterask.erni)
 
 ## Code of conduct
 
