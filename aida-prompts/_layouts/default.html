@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>{{ page.title }}</title>
+  {{ site.seo }}
+  <style>
+    /* Existing styling */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    #searchInput {
+      padding: 8px;
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+    }
+    #promptList li {
+      list-style-type: none;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 10px;
+    }
+    #promptList h2 {
+      margin: 0;
+    }
+    #promptList p {
+      margin: 5px 0;
+      color: #555;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 10px;
+      overflow: auto;
+    }
+    button {
+      padding: 8px 12px;
+      background-color: #008cba;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005f5f;
+    }
+    /* New styling for author links */
+    p.author a {
+      color: #008cba;
+      text-decoration: none;
+    }
+    p.author a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  {{ content }}
+</body>
+</html>
