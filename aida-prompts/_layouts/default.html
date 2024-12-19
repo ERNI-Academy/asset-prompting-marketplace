@@ -3,58 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <title>{{ page.title }}</title>
-  {{ site.seo }}
-  <style>
-    /* Existing styling */
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-    #searchInput {
-      padding: 8px;
-      width: 100%;
-      box-sizing: border-box;
-      margin-bottom: 20px;
-    }
-    #promptList li {
-      list-style-type: none;
-      margin-bottom: 20px;
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 10px;
-    }
-    #promptList h2 {
-      margin: 0;
-    }
-    #promptList p {
-      margin: 5px 0;
-      color: #555;
-    }
-    pre {
-      background: #f4f4f4;
-      padding: 10px;
-      overflow: auto;
-    }
-    button {
-      padding: 8px 12px;
-      background-color: #008cba;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #005f5f;
-    }
-    /* New styling for author links */
-    p.author a {
-      color: #008cba;
-      text-decoration: none;
-    }
-    p.author a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Bootstrap Icons CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <!-- Optional: Your Custom CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
-  {{ content }}
+  <!-- Toast Notification -->
+  <div aria-live="polite" aria-atomic="true" style="position: relative;">
+    <div id="copyToast" class="toast" role="alert" data-delay="2000" style="position: absolute; top: 1rem; right: 1rem;">
+      <div class="toast-body">
+        Prompt copied to clipboard!
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    {{ content }}
+  </div>
+
+  <!-- jQuery and Bootstrap JS Bundle -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
