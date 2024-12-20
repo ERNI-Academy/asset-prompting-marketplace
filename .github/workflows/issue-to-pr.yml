@@ -26,18 +26,24 @@ jobs:
           prompt_name="${{ github.event.issue.title }}"
           echo "PROMPT_NAME=$prompt_name" >> $GITHUB_ENV
 
+          # Save the issue body into a variable safely
+          issue_body=$(printf '%s' "${{ github.event.issue.body }}")
+
           # Extract author
-          author="$(echo "${{ github.event.issue.body }}" | awk '/^### Author$/,/^###|$/{if ($0 !~ /^###/ && $0 != "") print}' \
+          author="$(printf '%s' "$issue_body" \
+            | awk '/^### Author$/,/^###/{if ($0 !~ /^###/ && $0 != "") print}' \
             | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
           echo "AUTHOR=$author" >> $GITHUB_ENV
 
           # Extract tags
-          tags="$(echo "${{ github.event.issue.body }}" | awk '/^### Tags$/,/^###|$/{if ($0 !~ /^###/ && $0 != "") print}' \
+          tags="$(printf '%s' "$issue_body" \
+            | awk '/^### Tags$/,/^###/{if ($0 !~ /^###/ && $0 != "") print}' \
             | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
           echo "TAGS=$tags" >> $GITHUB_ENV
 
           # Extract prompt content
-          prompt_content="$(echo "${{ github.event.issue.body }}" | awk '/^### Prompt$/,/^$/{if ($0 !~ /^###/ && $0 != "") print}')"
+          prompt_content="$(printf '%s' "$issue_body" \
+            | awk '/^### Prompt$/,/^###/{if ($0 !~ /^###/ && $0 != "") print}')"
           echo "PROMPT_CONTENT<<EOF" >> $GITHUB_ENV
           echo "$prompt_content" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
