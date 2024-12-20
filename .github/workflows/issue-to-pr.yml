@@ -22,9 +22,8 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            // Safely serialize the issue body
-            const issueBody = JSON.parse(${{ toJSON(github.event.issue.body) }});
-            const promptName = `${{ toJSON(github.event.issue.title) }}`;
+            const issueBody = github.event.issue.body;
+            const promptName = github.event.issue.title;
             const fs = require('fs');
 
             // Write issue body to file
@@ -62,7 +61,10 @@ jobs:
             fs.appendFileSync(process.env.GITHUB_ENV, `TAGS=${tags}\n`);
 
             // Handle multi-line environment variable
-            fs.appendFileSync(process.env.GITHUB_ENV, `PROMPT_CONTENT<<EOF\n${promptContent}\nEOF\n`);
+            fs.appendFileSync(
+              process.env.GITHUB_ENV,
+              `PROMPT_CONTENT<<EOF\n${promptContent}\nEOF\n`
+            );
 
       - name: Debug Extracted Data
         run: |
