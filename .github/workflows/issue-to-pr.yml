@@ -67,9 +67,14 @@ jobs:
           echo "Prompt Content:"
           echo "${{ steps.extract_data.outputs.PROMPT_CONTENT_B64 }}" | base64 --decode
 
-      # Remove the 'Create Branch' step
       # The action will handle creating the branch
-
+      - name: Create Branch
+        id: branch_name
+        run: |
+          BRANCH_NAME="issue-${{ github.event.issue.number }}"
+          echo "branch=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          git checkout -b "$BRANCH_NAME"
+          
       - name: Create File from Issue
         run: |
           # Retrieve variables
