@@ -22,8 +22,8 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const issueBody = github.event.issue.body;
-            const promptName = github.event.issue.title;
+            const issueBody = context.payload.issue.body;
+            const promptName = context.payload.issue.title;
             const fs = require('fs');
 
             // Write issue body to file
