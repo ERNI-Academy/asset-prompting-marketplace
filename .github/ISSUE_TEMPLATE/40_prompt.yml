@@ -1,0 +1,55 @@
+---
+name: Prompt for AIDA Marketplace
+description: Template for generating a prompt in the AIDA Marketplace.
+title: "{{ title }}"
+labels: [prompt]
+assignees: []
+
+body:
+  - type: input
+    id: title
+    attributes:
+      label: Issue Title
+      description: Provide the title of the prompt.
+      placeholder: "Employee survey analysis on [TOPIC]"
+    validations:
+      required: true
+
+  - type: input
+    id: author
+    attributes:
+      label: Author
+      description: Enter your name.
+      placeholder: "John Doe"
+    validations:
+      required: true
+
+  - type: input
+    id: tags
+    attributes:
+      label: Tags
+      description: Provide relevant tags (comma-separated).
+      placeholder: "data, analysis, HR, backend, writing"
+    validations:
+      required: true
+
+  - type: textarea
+    id: prompt
+    attributes:
+      label: Prompt
+      description: The raw prompt
+      placeholder: "Raw prompt text"
+      render: yaml  # This will render it in a code block.
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        title: "{{ title }}"
+        author: "{{ author }}"
+        tags: [{{ tags }}]
+        ---
+
+        {{ prompt }}
