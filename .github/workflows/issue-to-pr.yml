@@ -19,39 +19,49 @@ jobs:
 
       - name: Extract Issue Data
         id: extract_data
-        run: |
-          echo "Extracting data from issue body"
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const issueBody = `\n${{ github.event.issue.body }}`;
+            const fs = require('fs');
 
-          # Set PROMPT_NAME to the issue title
-          prompt_name="${{ github.event.issue.title }}"
-          echo "PROMPT_NAME=$prompt_name" >> $GITHUB_ENV
+            // Write issue body to file
+            fs.writeFileSync('issue_body.txt', issueBody);
 
-          # Write the issue body to a temporary file
-          printf '%s' "${{ github.event.issue.body }}" > issue_body.txt
+            // Split issue body into lines
+            const lines = issueBody.split('\n');
 
-          # Extract author
-          author="$(awk '/^### Author$/,/^###/{if ($0 !~ /^###/ && $0 != "") print}' issue_body.txt | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
-          echo "AUTHOR=$author" >> $GITHUB_ENV
+            function extractSection(header) {
+              const sectionLines = [];
+              let inSection = false;
 
-          # Extract tags
-          tags="$(awk '/^### Tags$/,/^###/{if ($0 !~ /^###/ && $0 != "") print}' issue_body.txt | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
-          echo "TAGS=$tags" >> $GITHUB_ENV
+              for (const line of lines) {
+                if (line.trim() === `### ${header}`) {
+                  inSection = true;
+                  continue;
+                }
+                if (inSection && line.startsWith('### ')) {
+                  break;
+                }
+                if (inSection) {
+                  sectionLines.push(line);
+                }
+              }
+              return sectionLines.join('\n').trim();
+            }
 
-          # Extract prompt content
-          prompt_content="$(awk '/^### Prompt$/,/^###|^$/{if ($0 !~ /^###/ && $0 != "") print}' issue_body.txt)"
-          echo "PROMPT_CONTENT<<EOF" >> $GITHUB_ENV
-          echo "$prompt_content" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+            const promptName = `${{ github.event.issue.title }}`;
+            const author = extractSection('Author');
+            const tags = extractSection('Tags');
+            const promptContent = extractSection('Prompt');
 
-          # Remove the temporary file
-          rm issue_body.txt
+            // Set environment variables
+            fs.appendFileSync(process.env.GITHUB_ENV, `PROMPT_NAME=${promptName}\n`);
+            fs.appendFileSync(process.env.GITHUB_ENV, `AUTHOR=${author}\n`);
+            fs.appendFileSync(process.env.GITHUB_ENV, `TAGS=${tags}\n`);
 
-      - name: Create Branch
-        id: branch_name
-        run: |
-          BRANCH_NAME="issue-${{ github.event.issue.number }}"
-          echo "branch=$BRANCH_NAME" >> $GITHUB_OUTPUT
-          git checkout -b "$BRANCH_NAME"
+            // Handle multi-line environment variable
+            fs.appendFileSync(process.env.GITHUB_ENV, `PROMPT_CONTENT<<EOF\n${promptContent}\nEOF\n`);
 
       - name: Debug Extracted Data
         run: |
@@ -60,6 +70,13 @@ jobs:
           echo "Tags: $TAGS"
           echo "Prompt Content:"
           echo "$PROMPT_CONTENT"
+
+      - name: Create Branch
+        id: branch_name
+        run: |
+          BRANCH_NAME="issue-${{ github.event.issue.number }}"
+          echo "branch=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          git checkout -b "$BRANCH_NAME"
 
       - name: Create File from Issue
         run: |
