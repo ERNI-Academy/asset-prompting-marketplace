@@ -24,10 +24,13 @@ jobs:
           script: |
             const issueBody = context.payload.issue.body;
             const issueTitle = context.payload.issue.title;
+
             const lines = issueBody.split('\n');
+
             function extractSection(header) {
               const sectionLines = [];
               let inSection = false;
+
               for (const line of lines) {
                 if (line.trim().toLowerCase() === `### ${header.toLowerCase()}`) {
                   inSection = true;
@@ -42,6 +45,7 @@ jobs:
               }
               return sectionLines.join('\n').trim();
             }
+
             const author = extractSection('Author');
             const tags = extractSection('Tags');
             const promptContent = extractSection('Prompt');
@@ -61,34 +65,32 @@ jobs:
           echo "Prompt Content:"
           echo "${{ steps.extract_data.outputs.PROMPT_CONTENT_B64 }}" | base64 --decode
 
-      # Remove 'Create Branch' and 'Push Branch' steps
-
       - name: Create File from Issue
         run: |
+          #!/bin/bash
+          set -e
           # Retrieve variables
           PROMPT_NAME="${{ steps.extract_data.outputs.PROMPT_NAME }}"
           AUTHOR="${{ steps.extract_data.outputs.AUTHOR }}"
           TAGS="${{ steps.extract_data.outputs.TAGS }}"
           PROMPT_CONTENT_B64="${{ steps.extract_data.outputs.PROMPT_CONTENT_B64 }}"
-          # Decode the base64 content
-          PROMPT_CONTENT=$(echo "$PROMPT_CONTENT_B64" | base64 --decode)
           # Sanitize prompt name to create a valid file name
           FILE_NAME="$(echo "$PROMPT_NAME" | tr '[:upper:]' '[:lower:]' \
             | sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g')"
           FILE_PATH="aida-prompts/_prompts/${FILE_NAME}.md"
           echo "Creating file at $FILE_PATH"
           mkdir -p "$(dirname "$FILE_PATH")"
-          # Write the content to the .md file using cat
+          # Write the front matter to the file
           {
-            echo '---'
+            echo "---"
             echo "title: \"$PROMPT_NAME\""
             echo "author: \"$AUTHOR\""
             echo "tags: [${TAGS}]"
-            echo '---'
-            echo
-            echo "$PROMPT_CONTENT"
+            echo "---"
+            echo ""
           } > "$FILE_PATH"
-          # Do not commit changes here
+          # Append the prompt content by decoding it directly to the file
+          echo "$PROMPT_CONTENT_B64" | base64 --decode >> "$FILE_PATH"
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
