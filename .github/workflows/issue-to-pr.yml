@@ -22,7 +22,9 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const issueBody = `\n${{ github.event.issue.body }}`;
+            // Safely serialize the issue body
+            const issueBody = JSON.parse(${{ toJSON(github.event.issue.body) }});
+            const promptName = `${{ toJSON(github.event.issue.title) }}`;
             const fs = require('fs');
 
             // Write issue body to file
@@ -50,7 +52,6 @@ jobs:
               return sectionLines.join('\n').trim();
             }
 
-            const promptName = `${{ github.event.issue.title }}`;
             const author = extractSection('Author');
             const tags = extractSection('Tags');
             const promptContent = extractSection('Prompt');
