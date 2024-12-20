@@ -68,6 +68,17 @@ body {
   color: var(--navbar-background-color);
 }
 
+/* Style for the Submit Prompt Button in Navbar */
+.navbar .btn-outline-light {
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+.navbar .btn-outline-light:hover {
+  background-color: #FFFFFF;
+  color: var(--primary-color);
+}
+
 /* Footer */
 footer {
   background-color: var(--secondary-color);
@@ -122,6 +133,30 @@ body.dark-mode footer a i {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
+/* Modal Trigger */
+.modal-trigger {
+  cursor: pointer;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-trigger .prompt-text {
+  pointer-events: none;
+  flex-grow: 1;
+}
+
+.modal-trigger .tags {
+  margin-top: auto;
+}
+
+/* Prompt Content */
+.prompt-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
 .card-title {
   font-weight: 600; /* SemiBold */
   font-size: 1.125rem; /* Approximately 18px */
@@ -138,10 +173,6 @@ body.dark-mode .card-title {
   font-size: 0.875rem; /* Approximately 14px */
   line-height: 1.6;
   color: var(--text-color);
-}
-
-.prompt-content .tags {
-  margin-top: auto;
 }
 
 /* Badges */
@@ -215,6 +246,26 @@ body.dark-mode .btn-outline-secondary {
 body.dark-mode .btn-outline-secondary:hover {
   background-color: #FFFFFF;
   color: var(--background-color);
+}
+
+/* Button Ripple Effect */
+.btn::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform: scale(0);
+}
+
+.btn:active::after {
+  opacity: 0.4;
+  transform: scale(1);
+  transition: transform 0.5s, opacity 0.5s;
 }
 
 /* Back to Top Button */

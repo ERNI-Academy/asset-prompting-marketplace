@@ -10,7 +10,7 @@ title: AIDA Prompt Marketplace
 
   <!-- Search Input -->
   <div class="input-group mb-4">
-    <input type="text" id="searchInput" class="form-control" placeholder="Filter by tag..." onkeyup="filterPrompts()">
+    <input type="text" id="searchInput" class="form-control" placeholder="Search prompts..." onkeyup="filterPrompts()">
     <span class="input-group-text"><i class="bi bi-search"></i></span>
   </div>
 
@@ -41,7 +41,7 @@ title: AIDA Prompt Marketplace
               </button>
             </div>
             <!-- Content that triggers the modal -->
-            <div class="modal-trigger flex-grow-1" data-bs-toggle="modal" data-bs-target="#promptModal{{ forloop.index }}">
+            <div class="modal-trigger" data-bs-toggle="modal" data-bs-target="#promptModal{{ forloop.index }}">
               <pre class="plain-text prompt-text">{{ prompt_content | xml_escape }}</pre>
               {% if prompt.tags %}
                 <div class="tags mt-3">
@@ -126,16 +126,16 @@ title: AIDA Prompt Marketplace
     // Filter Prompts based on input
     window.filterPrompts = function() {
       var input = document.getElementById('searchInput').value.toLowerCase().trim();
-      var filters = input.split(',').map(function(item) { return item.trim(); }).filter(Boolean);
       var prompts = document.getElementsByClassName('prompt-box');
 
       for (var i = 0; i < prompts.length; i++) {
+        var title = prompts[i].querySelector('.card-title').innerText.toLowerCase();
+        var content = prompts[i].querySelector('.prompt-text').innerText.toLowerCase();
         var tags = prompts[i].querySelector('.tags') ? prompts[i].querySelector('.tags').innerText.toLowerCase() : '';
-        var match = filters.every(function(filter) {
-          return tags.includes(filter);
-        });
 
-        if (match || filters.length === 0) {
+        var match = title.includes(input) || content.includes(input) || tags.includes(input);
+
+        if (match || input === '') {
           prompts[i].parentElement.style.display = "";
         } else {
           prompts[i].parentElement.style.display = "none";
@@ -148,7 +148,7 @@ title: AIDA Prompt Marketplace
     Array.prototype.forEach.call(tagLinks, function(link) {
       link.addEventListener('click', function(e) {
         e.preventDefault();
-        e.stopPropagation();
+        e.stopPropagation(); // Prevent the modal from opening when clicking on a tag
         document.getElementById('searchInput').value = e.target.getAttribute('data-tag');
         filterPrompts();
       });
