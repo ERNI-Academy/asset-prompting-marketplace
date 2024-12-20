@@ -1,20 +1,11 @@
 ---
 name: 📖 Prompt for AIDA Marketplace
 description: Template for generating a prompt in the AIDA Marketplace.
-title: "{{ title }}"
 labels: [prompt]
 assignees: []
 
 body:
-  - type: input
-    id: title
-    attributes:
-      label: Issue Title
-      description: Provide the title of the prompt.
-      placeholder: "Employee survey analysis on [TOPIC]"
-    validations:
-      required: true
-
+  # Removed the 'title' input field
   - type: input
     id: author
     attributes:
@@ -47,7 +38,7 @@ body:
     attributes:
       value: |
         ---
-        title: "{{ title }}"
+        title: "{{ ISSUE_TITLE }}"
         author: "{{ author }}"
         tags: [{{ tags }}]
         ---
