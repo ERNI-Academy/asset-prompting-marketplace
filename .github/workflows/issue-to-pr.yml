@@ -27,11 +27,13 @@ jobs:
           echo "PROMPT_NAME=$prompt_name" >> $GITHUB_ENV
 
           # Extract author
-          author="$(echo "${{ github.event.issue.body }}" | awk '/^### Author$/,/^###/{if ($0 !~ /^###/ && $0 != "") print}' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+          author="$(echo "${{ github.event.issue.body }}" | awk '/^### Author$/,/^###|$/{if ($0 !~ /^###/ && $0 != "") print}' \
+            | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
           echo "AUTHOR=$author" >> $GITHUB_ENV
 
           # Extract tags
-          tags="$(echo "${{ github.event.issue.body }}" | awk '/^### Tags$/,/^###/{if ($0 !~ /^###/ && $0 != "") print}' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+          tags="$(echo "${{ github.event.issue.body }}" | awk '/^### Tags$/,/^###|$/{if ($0 !~ /^###/ && $0 != "") print}' \
+            | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
           echo "TAGS=$tags" >> $GITHUB_ENV
 
           # Extract prompt content
@@ -58,22 +60,24 @@ jobs:
       - name: Create File from Issue
         run: |
           # Sanitize prompt name to create a valid file name
-          FILE_NAME="$(echo "$PROMPT_NAME" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g')"
+          FILE_NAME="$(echo "$PROMPT_NAME" | tr '[:upper:]' '[:lower:]' \
+            | sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g')"
           FILE_PATH="aida-prompts/_prompts/${FILE_NAME}.md"
 
           echo "Creating file at $FILE_PATH"
 
           mkdir -p "$(dirname "$FILE_PATH")"
 
-          cat > "$FILE_PATH" <<EOF
----
-title: "$PROMPT_NAME"
-author: "$AUTHOR"
-tags: [$TAGS]
----
-
-$PROMPT_CONTENT
-EOF
+          # Use printf to write to the file
+          printf '%s\n' \
+            '---' \
+            "title: \"$PROMPT_NAME\"" \
+            "author: \"$AUTHOR\"" \
+            "tags: [$TAGS]" \
+            '---' \
+            '' \
+            "$PROMPT_CONTENT" \
+            > "$FILE_PATH"
 
           git add "$FILE_PATH"
           git commit -m "Add prompt '$PROMPT_NAME' from Issue #${{ github.event.issue.number }}"
