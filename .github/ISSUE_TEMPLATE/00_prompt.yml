@@ -1,11 +1,20 @@
 ---
 name: 📖 Prompt for AIDA Marketplace
 description: Template for generating a prompt in the AIDA Marketplace.
+title: "{{ prompt_name }}"
 labels: [prompt]
 assignees: []
 
 body:
-  # Removed the 'title' input field
+  - type: input
+    id: prompt_name
+    attributes:
+      label: Prompt Name
+      description: Enter the prompt name (used for file naming).
+      placeholder: "Diversity inclusion text enhancer"
+    validations:
+      required: true
+
   - type: input
     id: author
     attributes:
@@ -20,7 +29,7 @@ body:
     attributes:
       label: Tags
       description: Provide relevant tags (comma-separated).
-      placeholder: "data, analysis, HR, backend, writing"
+      placeholder: "diversity, text, enhancer"
     validations:
       required: true
 
@@ -28,8 +37,17 @@ body:
     id: prompt
     attributes:
       label: Prompt
-      description: The raw prompt
-      placeholder: "Raw prompt text"
+      description: The raw prompt text.
+      placeholder: |
+        Given a text, enhance it to be more inclusive and diverse.
+        - Do not use offensive words or phrases.
+        - Do not use words or phrases that are not inclusive or diverse.
+        - Do it in a way that it sounds natural and not forced.
+        Text to enhance:
+
+        \`\`\`
+        [TEXT]
+        \`\`\`
       render: yaml  # This will render it in a code block.
     validations:
       required: true
@@ -38,7 +56,7 @@ body:
     attributes:
       value: |
         ---
-        title: "{{ ISSUE_TITLE }}"
+        title: "{{ prompt_name }}"
         author: "{{ author }}"
         tags: [{{ tags }}]
         ---
