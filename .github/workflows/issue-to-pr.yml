@@ -6,7 +6,7 @@ on:
 
 jobs:
   create_pr:
-    if: contains( toJson( github.event.issue.labels ), '"prompt"' )
+    if: contains(toJson(github.event.issue.labels), '"prompt"')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -14,14 +14,15 @@ jobs:
 
       - name: Set up Git Config
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Extract Issue Data
         id: extract_data
         uses: actions/github-script@v6
         with:
           script: |
+            // 'core' is already provided by actions/github-script
             const issueBody = context.payload.issue.body;
             const issueTitle = context.payload.issue.title;
 
@@ -62,13 +63,13 @@ jobs:
           echo "Author: ${{ steps.extract_data.outputs.AUTHOR }}"
           echo "Tags: ${{ steps.extract_data.outputs.TAGS }}"
           echo "Prompt Content:"
-          echo "${{ steps.extract_data.outputs.PROMPT_CONTENT }}"
+          printf '%s\n' "${{ steps.extract_data.outputs.PROMPT_CONTENT }}"
 
       - name: Create Branch
         id: create_branch
         run: |
           BRANCH_NAME="issue-${{ github.event.issue.number }}"
-          echo "branch=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          echo "branch=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
           git checkout -b "$BRANCH_NAME"
 
       - name: Create File from Issue
@@ -93,7 +94,7 @@ jobs:
             '---' \
             "title: \"$PROMPT_NAME\"" \
             "author: \"$AUTHOR\"" \
-            "tags: [$TAGS]" \
+            "tags: [${TAGS}]" \
             '---' \
             '' \
             "$PROMPT_CONTENT" \
