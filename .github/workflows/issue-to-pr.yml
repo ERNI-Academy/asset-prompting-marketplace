@@ -35,7 +35,7 @@ jobs:
           echo "TAGS=$tags" >> $GITHUB_ENV
 
           # Extract prompt content
-          prompt_content="$(echo "${{ github.event.issue.body }}" | awk '/^### Prompt$/,/^$/ {if ($0 !~ /^###/ && $0 != "") print}' )"
+          prompt_content="$(echo "${{ github.event.issue.body }}" | awk '/^### Prompt$/,/^$/{if ($0 !~ /^###/ && $0 != "") print}' )"
           echo "PROMPT_CONTENT<<EOF" >> $GITHUB_ENV
           echo "$prompt_content" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
