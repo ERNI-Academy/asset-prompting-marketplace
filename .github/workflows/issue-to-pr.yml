@@ -28,7 +28,7 @@ jobs:
 
       - name: Create File from Issue
         run: |
-          echo "${{ github.event.issue.body }}" > issue-${{ github.event.issue.number }}.md
+          echo '${{ toJson(github.event.issue.body) }}' | jq -r '.' > "issue-${{ github.event.issue.number }}.md"
           git add .
           git commit -m "Add issue content for #${{ github.event.issue.number }}"
 
