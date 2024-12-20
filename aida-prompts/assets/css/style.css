@@ -1,53 +1,123 @@
 /* Custom Styles */
 
-/* Style for the prompt boxes */
-.prompt-box {
-  background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
-  padding: 15px;
-  border-radius: 5px;
+/* Import Google Fonts */
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+/* CSS Variables for Theming */
+:root {
+  --background-color: #ffffff;
+  --text-color: #333333;
+  --primary-color: #4C5C68;
+  --secondary-color: #F0F4F8;
+}
+
+/* Dark Mode Variables */
+body.dark-mode {
+  --background-color: #1e1e1e;
+  --text-color: #f0f0f0;
+  --primary-color: #9fa8b1;
+  --secondary-color: #2e2e2e;
+}
+
+/* Apply Variables */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+/* Navbar */
+.navbar {
+  background-color: var(--secondary-color);
+}
+
+/* Prompt Cards */
+.card.prompt-box {
+  background-color: var(--background-color);
+  border-color: #e0e0e0;
   cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  transition: box-shadow 0.2s, background-color 0.2s;
 }
 
-.prompt-box h5 {
-  margin-top: 0;
+.card.prompt-box:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background-color: var(--secondary-color);
 }
 
-/* Remove absolute positioning from the button */
-.prompt-box .btn {
-  position: static;
+.card-title {
+  font-weight: 500;
+  color: var(--text-color);
 }
 
-/* Optional: Adjust the prompt text style */
 .prompt-content .prompt-text {
-  margin-top: 10px; /* Add space between the header and text */
+  margin-top: 0.5rem;
   flex-grow: 1;
-}
-
-/* Ensure the tags are positioned at the bottom if needed */
-.prompt-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-color);
 }
 
 .prompt-content .tags {
-  margin-top: 10px;
+  margin-top: auto;
 }
 
-/* Cursor styles to indicate clickable elements */
-.prompt-box .tags a {
+.badge.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.badge.bg-primary:hover {
+  background-color: #3a4a54 !important;
   cursor: pointer;
 }
 
-.badge-primary {
-  background-color: #007bff;
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
 }
 
-.badge-primary:hover {
-  background-color: #0056b3;
-  cursor: pointer;
+.btn-primary:hover {
+  background-color: #3a4a54;
+}
+
+.btn-outline-secondary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--primary-color);
+  color: #ffffff;
+}
+
+.plain-text {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Toast Customization */
+.toast {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.toast.show {
+  opacity: 1;
+}
+
+/* Transition Effects */
+.btn, .badge, .card.prompt-box {
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Responsiveness */
+@media (max-width: 576px) {
+  .prompt-box {
+    padding: 0.75rem;
+  }
 }
