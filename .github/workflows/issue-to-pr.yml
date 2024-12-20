@@ -26,27 +26,25 @@ jobs:
           prompt_name="${{ github.event.issue.title }}"
           echo "PROMPT_NAME=$prompt_name" >> $GITHUB_ENV
 
-          # Save the issue body into a variable safely
-          issue_body=$(printf '%s' "${{ github.event.issue.body }}")
+          # Write the issue body to a temporary file
+          printf '%s' "${{ github.event.issue.body }}" > issue_body.txt
 
           # Extract author
-          author="$(printf '%s' "$issue_body" \
-            | awk '/^### Author$/,/^###/{if ($0 !~ /^###/ && $0 != "") print}' \
-            | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+          author="$(awk '/^### Author$/,/^###/{if ($0 !~ /^###/ && $0 != "") print}' issue_body.txt | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
           echo "AUTHOR=$author" >> $GITHUB_ENV
 
           # Extract tags
-          tags="$(printf '%s' "$issue_body" \
-            | awk '/^### Tags$/,/^###/{if ($0 !~ /^###/ && $0 != "") print}' \
-            | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+          tags="$(awk '/^### Tags$/,/^###/{if ($0 !~ /^###/ && $0 != "") print}' issue_body.txt | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
           echo "TAGS=$tags" >> $GITHUB_ENV
 
           # Extract prompt content
-          prompt_content="$(printf '%s' "$issue_body" \
-            | awk '/^### Prompt$/,/^###/{if ($0 !~ /^###/ && $0 != "") print}')"
+          prompt_content="$(awk '/^### Prompt$/,/^###|^$/{if ($0 !~ /^###/ && $0 != "") print}' issue_body.txt)"
           echo "PROMPT_CONTENT<<EOF" >> $GITHUB_ENV
           echo "$prompt_content" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
+
+          # Remove the temporary file
+          rm issue_body.txt
 
       - name: Create Branch
         id: branch_name
