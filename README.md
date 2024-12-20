@@ -51,7 +51,7 @@ Please see our [Contribution Guide](CONTRIBUTING.md) to learn how to contribute.
 
 ![MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
-(LICENSE) © 2024 [ERNI - Swiss Software Engineering](https://www.betterask.erni)
+MIT License © 2024 [ERNI - Swiss Software Engineering](https://www.betterask.erni)
 
 ## Code of conduct
 
