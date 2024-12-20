@@ -1,9 +1,8 @@
 ---
 name: 📖 Prompt for AIDA Marketplace
 description: Template for generating a prompt in the AIDA Marketplace.
-title: ""
+title: Add here the title of the prompt
 labels: [prompt]
-placeholder: "Add here the title of the prompt"
 assignees: []
 
 body:
