@@ -22,7 +22,6 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            // 'core' is already provided by actions/github-script
             const issueBody = context.payload.issue.body;
             const issueTitle = context.payload.issue.title;
 
@@ -51,11 +50,14 @@ jobs:
             const tags = extractSection('Tags');
             const promptContent = extractSection('Prompt');
 
+            // Base64 encode the prompt content
+            const promptContentB64 = Buffer.from(promptContent, 'utf-8').toString('base64');
+
             // Set outputs
             core.setOutput('PROMPT_NAME', issueTitle);
             core.setOutput('AUTHOR', author);
             core.setOutput('TAGS', tags);
-            core.setOutput('PROMPT_CONTENT', promptContent);
+            core.setOutput('PROMPT_CONTENT_B64', promptContentB64);
 
       - name: Debug Extracted Data
         run: |
@@ -63,7 +65,7 @@ jobs:
           echo "Author: ${{ steps.extract_data.outputs.AUTHOR }}"
           echo "Tags: ${{ steps.extract_data.outputs.TAGS }}"
           echo "Prompt Content:"
-          printf '%s\n' "${{ steps.extract_data.outputs.PROMPT_CONTENT }}"
+          echo "${{ steps.extract_data.outputs.PROMPT_CONTENT_B64 }}" | base64 --decode
 
       - name: Create Branch
         id: create_branch
@@ -78,7 +80,10 @@ jobs:
           PROMPT_NAME="${{ steps.extract_data.outputs.PROMPT_NAME }}"
           AUTHOR="${{ steps.extract_data.outputs.AUTHOR }}"
           TAGS="${{ steps.extract_data.outputs.TAGS }}"
-          PROMPT_CONTENT="${{ steps.extract_data.outputs.PROMPT_CONTENT }}"
+          PROMPT_CONTENT_B64="${{ steps.extract_data.outputs.PROMPT_CONTENT_B64 }}"
+
+          # Decode the base64 content
+          PROMPT_CONTENT=$(echo "$PROMPT_CONTENT_B64" | base64 --decode)
 
           # Sanitize prompt name to create a valid file name
           FILE_NAME="$(echo "$PROMPT_NAME" | tr '[:upper:]' '[:lower:]' \
@@ -89,16 +94,16 @@ jobs:
 
           mkdir -p "$(dirname "$FILE_PATH")"
 
-          # Write the content to the .md file using printf
-          printf '%s\n' \
-            '---' \
-            "title: \"$PROMPT_NAME\"" \
-            "author: \"$AUTHOR\"" \
-            "tags: [${TAGS}]" \
-            '---' \
-            '' \
-            "$PROMPT_CONTENT" \
-            > "$FILE_PATH"
+          # Write the content to the .md file using cat
+          {
+            echo '---'
+            echo "title: \"$PROMPT_NAME\""
+            echo "author: \"$AUTHOR\""
+            echo "tags: [${TAGS}]"
+            echo '---'
+            echo
+            echo "$PROMPT_CONTENT"
+          } > "$FILE_PATH"
 
           git add "$FILE_PATH"
           git commit -m "Add prompt '$PROMPT_NAME' from Issue #${{ github.event.issue.number }}"
