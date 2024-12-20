@@ -1,4 +1,4 @@
-name: Issue to PR Automation
+name: issue-to-pr-automation
 
 on:
   issues:
