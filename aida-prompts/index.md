@@ -15,7 +15,7 @@ title: AIDA Prompt Marketplace
   </div>
 
   <!-- Prompts Grid -->
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
     {% assign prompts = site.prompts | sort: 'title' %}
     {% for prompt in prompts %}
       {% capture prompt_raw_content %}
@@ -33,14 +33,17 @@ title: AIDA Prompt Marketplace
       <!-- Prompt Card -->
       <div class="col">
         <div class="card h-100 prompt-box" data-bs-toggle="modal" data-bs-target="#promptModal{{ forloop.index }}">
-          <div class="card-body prompt-content">
+          <div class="card-body prompt-content d-flex flex-column">
             <div class="d-flex justify-content-between align-items-start mb-2">
               <h5 class="card-title">{{ prompt.title }}</h5>
               <button class="btn btn-outline-secondary btn-sm copy-btn" title="Copy Prompt">
                 <i class="bi bi-clipboard"></i>
               </button>
             </div>
-            <pre class="plain-text prompt-text flex-grow-1">{{ prompt_content | xml_escape }}</pre>
+            <!-- Content that grows to fill space -->
+            <div class="flex-grow-1">
+              <pre class="plain-text prompt-text">{{ prompt_content | xml_escape }}</pre>
+            </div>
             {% if prompt.tags %}
               <div class="tags mt-3">
                 {% for tag in prompt.tags %}
@@ -146,6 +149,19 @@ title: AIDA Prompt Marketplace
         document.getElementById('searchInput').value = e.target.getAttribute('data-tag');
         filterPrompts();
       });
+    });
+
+    // Back to Top Button
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 300) {
+        document.body.classList.add('show-back-to-top');
+      } else {
+        document.body.classList.remove('show-back-to-top');
+      }
+    });
+
+    document.getElementById('backToTopBtn').addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   });
 </script>
