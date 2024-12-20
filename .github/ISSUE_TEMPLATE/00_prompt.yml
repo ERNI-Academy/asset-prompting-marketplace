@@ -1,5 +1,5 @@
 ---
-name: Prompt for AIDA Marketplace
+name: 📖 Prompt for AIDA Marketplace
 description: Template for generating a prompt in the AIDA Marketplace.
 title: "{{ title }}"
 labels: [prompt]
