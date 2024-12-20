@@ -2,44 +2,52 @@
 
 /* Style for the prompt boxes */
 .prompt-box {
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    padding: 15px;
-    border-radius: 5px;
-    position: relative;
-    cursor: pointer;
-    height: 100%;
-  }
-  
-  .prompt-box h5 {
-    margin-top: 0;
-  }
-  
-  .prompt-box .btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    cursor: pointer;
-  }
-  
-  .prompt-text {
-    /* Optional: Add styles for the prompt text */
-  }
-  
-  .tags {
-    margin-top: 10px;
-  }
-  
-  .badge-primary {
-    background-color: #007bff;
-  }
-  
-  .badge-primary:hover {
-    background-color: #0056b3;
-    cursor: pointer;
-  }
-  
-  /* Cursor styles to indicate clickable elements */
-  .prompt-box .tags a {
-    cursor: pointer;
-  }
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  padding: 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.prompt-box h5 {
+  margin-top: 0;
+}
+
+/* Remove absolute positioning from the button */
+.prompt-box .btn {
+  position: static;
+}
+
+/* Optional: Adjust the prompt text style */
+.prompt-content .prompt-text {
+  margin-top: 10px; /* Add space between the header and text */
+  flex-grow: 1;
+}
+
+/* Ensure the tags are positioned at the bottom if needed */
+.prompt-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.prompt-content .tags {
+  margin-top: 10px;
+}
+
+/* Cursor styles to indicate clickable elements */
+.prompt-box .tags a {
+  cursor: pointer;
+}
+
+.badge-primary {
+  background-color: #007bff;
+}
+
+.badge-primary:hover {
+  background-color: #0056b3;
+  cursor: pointer;
+}

@@ -17,19 +17,41 @@ title: AIDA Prompt Marketplace
 <div class="row">
   {% assign prompts = site.prompts | sort: 'title' %}
   {% for prompt in prompts %}
+    <!-- Capture the raw content of the prompt file -->
+    {% capture prompt_raw_content %}
+      {% include_relative {{ prompt.path }} %}
+    {% endcapture %}
+
+    <!-- Remove YAML front matter -->
+    {% assign parts = prompt_raw_content | split: '---' %}
+    {% if parts.size > 2 %}
+      {% assign content_length = parts.size | minus: 2 %}
+      {% assign prompt_content_array = parts | slice: 2, content_length %}
+      {% assign prompt_content = prompt_content_array | join: '---' | strip %}
+    {% else %}
+      {% assign prompt_content = prompt_raw_content %}
+    {% endif %}
+
     <div class="col-md-4 mb-4">
       <div class="prompt-box" data-toggle="modal" data-target="#promptModal{{ forloop.index }}">
         <div class="prompt-content">
-          <h5 class="mb-1">{{ prompt.title }}</h5>
-          <!-- Copy button with icon -->
-          <button class="btn btn-outline-secondary btn-sm float-right" onclick='copyToClipboard({{ prompt.content | jsonify }}); event.stopPropagation();' title="Copy Prompt">
-            <i class="bi bi-clipboard"></i>
-          </button>
-          <pre class="plain-text">{{ prompt.content }}</pre>
+          <!-- Header with title and copy button -->
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="mb-1">{{ prompt.title }}</h5>
+            <!-- Copy button with icon -->
+            <button
+              class="btn btn-outline-secondary btn-sm copy-btn"
+              title="Copy Prompt"
+            >
+              <i class="bi bi-clipboard"></i>
+            </button>
+          </div>
+          <!-- Prompt text -->
+          <pre class="plain-text prompt-text">{{ prompt_content | xml_escape }}</pre>
           {% if prompt.tags %}
             <div class="tags">
               {% for tag in prompt.tags %}
-                <a href="#" class="badge badge-primary tag-filter" data-tag="{{ tag }}" onclick="event.stopPropagation();">{{ tag }}</a>
+                <a href="#" class="badge badge-primary tag-filter" data-tag="{{ tag }}">{{ tag }}</a>
               {% endfor %}
             </div>
           {% endif %}
@@ -46,7 +68,7 @@ title: AIDA Prompt Marketplace
                 </button>
               </div>
               <div class="modal-body">
-                <pre class="plain-text">{{ prompt.content }}</pre>
+                <pre class="plain-text prompt-text">{{ prompt_content | xml_escape }}</pre>
                 {% if prompt.tags %}
                   <div class="tags">
                     {% for tag in prompt.tags %}
@@ -56,7 +78,9 @@ title: AIDA Prompt Marketplace
                 {% endif %}
               </div>
               <div class="modal-footer">
-                <button class="btn btn-primary" onclick='copyToClipboard({{ prompt.content | jsonify }});'>
+                <button
+                  class="btn btn-primary copy-btn"
+                >
                   <i class="bi bi-clipboard"></i> Copy Prompt
                 </button>
               </div>
@@ -71,37 +95,58 @@ title: AIDA Prompt Marketplace
 
 <!-- JavaScript Functions -->
 <script>
-  // Copy to Clipboard function with Toast notification
-  function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(function() {
-      $('#copyToast').toast('show');
-    }, function(err) {
-      alert('Could not copy text: ', err);
-    });
-  }
-
-  // Filter Prompts based on input
-  function filterPrompts() {
-    var input = document.getElementById('searchInput').value.toLowerCase().trim();
-    var filters = input.split(',').map(function(item) { return item.trim(); }).filter(Boolean);
-    var prompts = document.getElementsByClassName('prompt-box');
-
-    for (var i = 0; i < prompts.length; i++) {
-      var tags = prompts[i].querySelector('.tags') ? prompts[i].querySelector('.tags').innerText.toLowerCase() : '';
-      var match = filters.every(function(filter) {
-        return tags.includes(filter);
+  document.addEventListener('DOMContentLoaded', function() {
+    // Copy to Clipboard function with Toast notification
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(function() {
+        $('#copyToast').toast('show');
+      }, function(err) {
+        alert('Could not copy text: ', err);
       });
+    }
 
-      if (match || filters.length === 0) {
-        prompts[i].parentElement.style.display = "";
-      } else {
-        prompts[i].parentElement.style.display = "none";
+    // Add event listeners to copy buttons
+    var copyButtons = document.querySelectorAll('.copy-btn');
+    copyButtons.forEach(function(button) {
+      button.addEventListener('click', function(e) {
+        e.stopPropagation();
+        // Find the closest prompt container (either .prompt-box or .modal-content)
+        var promptContainer = this.closest('.prompt-box, .modal-content');
+        if (promptContainer) {
+          var promptContentElement = promptContainer.querySelector('.prompt-text');
+          if (promptContentElement) {
+            var text = promptContentElement.textContent || promptContentElement.innerText;
+            copyToClipboard(text.trim());
+          } else {
+            alert('Prompt content not found.');
+          }
+        } else {
+          alert('Prompt container not found.');
+        }
+      });
+    });
+
+    // Filter Prompts based on input
+    function filterPrompts() {
+      var input = document.getElementById('searchInput').value.toLowerCase().trim();
+      var filters = input.split(',').map(function(item) { return item.trim(); }).filter(Boolean);
+      var prompts = document.getElementsByClassName('prompt-box');
+
+      for (var i = 0; i < prompts.length; i++) {
+        var tags = prompts[i].querySelector('.tags') ? prompts[i].querySelector('.tags').innerText.toLowerCase() : '';
+        var match = filters.every(function(filter) {
+          return tags.includes(filter);
+        });
+
+        if (match || filters.length === 0) {
+          prompts[i].parentElement.style.display = "";
+        } else {
+          prompts[i].parentElement.style.display = "none";
+        }
       }
     }
-  }
 
-  // Add event listeners to tags for filtering
-  document.addEventListener('DOMContentLoaded', function() {
+    // Existing code for tag filtering
     var tagLinks = document.getElementsByClassName('tag-filter');
     Array.prototype.forEach.call(tagLinks, function(link) {
       link.addEventListener('click', function(e) {
