@@ -3,15 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <title>{{ page.title }}</title>
-  <!-- Existing meta tags and links -->
+  <!-- Meta Tags for SEO -->
+  <meta name="description" content="AIDA Prompt Marketplace - Collection of AI prompts.">
+  <meta name="keywords" content="AI, Prompts, Marketplace, OpenAI, ChatGPT">
+  <!-- Open Graph Tags for Social Sharing -->
+  <meta property="og:title" content="AIDA Prompt Marketplace">
+  <meta property="og:description" content="Discover and share AI prompts.">
+  <meta property="og:image" content="link_to_image.jpg"> <!-- Replace with your image URL -->
+  <meta property="og:url" content="your_website_url"> <!-- Replace with your website URL -->
+
   <!-- Favicon -->
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <!-- Google Fonts -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Roboto:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600&display=swap">
   <!-- Custom CSS -->
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
@@ -25,7 +34,7 @@
   </div>
 
   <!-- Navbar with Dark Mode Toggle -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+  <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">{{ site.title }}</a>
       <!-- Navbar toggler for mobile view -->
@@ -37,7 +46,7 @@
         <ul class="navbar-nav ms-auto">
           <!-- Add nav links here if needed -->
         </ul>
-        <button class="btn btn-outline-secondary ms-3" id="darkModeToggle">
+        <button class="btn btn-outline-secondary ms-3" id="darkModeToggle" title="Toggle Dark Mode">
           <i class="bi bi-moon-fill"></i>
         </button>
       </div>
@@ -67,14 +76,26 @@
   </button>
 
   <!-- Footer -->
-  <footer class="bg-light py-4 mt-5">
+  <footer class="py-4 mt-5">
     <div class="container text-center">
       <p class="mb-1">&copy; {{ site.time | date: "%Y" }} {{ site.title }}</p>
       <!-- Social Media Links -->
       <div>
-        <a href="#" class="text-secondary me-3"><i class="bi bi-twitter"></i></a>
-        <a href="#" class="text-secondary me-3"><i class="bi bi-facebook"></i></a>
-        <a href="#" class="text-secondary"><i class="bi bi-linkedin"></i></a>
+        <a href="https://www.linkedin.com/company/erni/" class="text-secondary me-3" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+          <i class="bi bi-linkedin"></i>
+        </a>
+        <a href="https://www.instagram.com/ernigroup/" class="text-secondary me-3" target="_blank" rel="noopener noreferrer" title="Instagram">
+          <i class="bi bi-instagram"></i>
+        </a>
+        <a href="https://www.youtube.com/@erniacademy" class="text-secondary me-3" target="_blank" rel="noopener noreferrer" title="YouTube">
+          <i class="bi bi-youtube"></i>
+        </a>
+        <a href="https://www.twitch.tv/erni_academy" class="text-secondary me-3" target="_blank" rel="noopener noreferrer" title="Twitch">
+          <i class="bi bi-twitch"></i>
+        </a>
+        <a href="https://github.com/ERNI-Academy/" class="text-secondary" target="_blank" rel="noopener noreferrer" title="GitHub">
+          <i class="bi bi-github"></i>
+        </a>
       </div>
     </div>
   </footer>
@@ -82,48 +103,16 @@
   <!-- Bootstrap JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Dark Mode Toggle Script -->
-  <script>
-    // Dark Mode Toggle
-    document.getElementById('darkModeToggle').addEventListener('click', function() {
-      document.body.classList.toggle('dark-mode');
-    });
-  </script>
-
-  <!-- Back to Top Button Script -->
-  <script>
-    // Back to Top Button
-    window.addEventListener('scroll', function() {
-      if (window.scrollY > 300) {
-        document.body.classList.add('show-back-to-top');
-      } else {
-        document.body.classList.remove('show-back-to-top');
-      }
-    });
-
-    document.getElementById('backToTopBtn').addEventListener('click', function() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  </script>
-
-  <!-- Loading Spinner Script -->
-  <script>
-    // Hide Loading Spinner when page is fully loaded
-    window.addEventListener('load', function() {
-      var loadingSpinner = document.getElementById('loadingSpinner');
-      loadingSpinner.style.display = 'none';
-    });
-  </script>
-  
+  <!-- Custom Scripts -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+
       // Hide Loading Spinner when the DOM is fully loaded
       var loadingSpinner = document.getElementById('loadingSpinner');
       if (loadingSpinner) {
         loadingSpinner.classList.add('hidden');
       }
-  
-      // Existing JavaScript code
+
       // Dark Mode Toggle
       var darkModeToggle = document.getElementById('darkModeToggle');
       if (darkModeToggle) {
@@ -131,7 +120,7 @@
           document.body.classList.toggle('dark-mode');
         });
       }
-  
+
       // Back to Top Button
       var backToTopBtn = document.getElementById('backToTopBtn');
       if (backToTopBtn) {
@@ -142,12 +131,14 @@
             document.body.classList.remove('show-back-to-top');
           }
         });
-  
+
         backToTopBtn.addEventListener('click', function() {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
       }
+
     });
   </script>
+
 </body>
 </html>

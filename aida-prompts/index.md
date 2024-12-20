@@ -32,7 +32,7 @@ title: AIDA Prompt Marketplace
 
       <!-- Prompt Card -->
       <div class="col">
-        <div class="card h-100 prompt-box" data-bs-toggle="modal" data-bs-target="#promptModal{{ forloop.index }}">
+        <div class="card h-100 prompt-box">
           <div class="card-body prompt-content d-flex flex-column">
             <div class="d-flex justify-content-between align-items-start mb-2">
               <h5 class="card-title">{{ prompt.title }}</h5>
@@ -40,17 +40,17 @@ title: AIDA Prompt Marketplace
                 <i class="bi bi-clipboard"></i>
               </button>
             </div>
-            <!-- Content that grows to fill space -->
-            <div class="flex-grow-1">
+            <!-- Content that triggers the modal -->
+            <div class="modal-trigger flex-grow-1" data-bs-toggle="modal" data-bs-target="#promptModal{{ forloop.index }}">
               <pre class="plain-text prompt-text">{{ prompt_content | xml_escape }}</pre>
+              {% if prompt.tags %}
+                <div class="tags mt-3">
+                  {% for tag in prompt.tags %}
+                    <a href="#" class="badge bg-primary tag-filter" data-tag="{{ tag }}">{{ tag }}</a>
+                  {% endfor %}
+                </div>
+              {% endif %}
             </div>
-            {% if prompt.tags %}
-              <div class="tags mt-3">
-                {% for tag in prompt.tags %}
-                  <a href="#" class="badge bg-primary tag-filter" data-tag="{{ tag }}">{{ tag }}</a>
-                {% endfor %}
-              </div>
-            {% endif %}
           </div>
         </div>
       </div>
@@ -88,6 +88,7 @@ title: AIDA Prompt Marketplace
 <!-- JavaScript Functions -->
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+
     // Copy to Clipboard function with Toast notification
     function copyToClipboard(text) {
       navigator.clipboard.writeText(text).then(function() {
@@ -104,7 +105,9 @@ title: AIDA Prompt Marketplace
     var copyButtons = document.querySelectorAll('.copy-btn');
     copyButtons.forEach(function(button) {
       button.addEventListener('click', function(e) {
-        e.stopPropagation();
+        e.stopPropagation(); // Prevent the event from bubbling up
+        e.preventDefault();  // Prevent default action (if any)
+
         var promptContainer = this.closest('.prompt-box, .modal-content');
         if (promptContainer) {
           var promptContentElement = promptContainer.querySelector('.prompt-text');
@@ -151,17 +154,5 @@ title: AIDA Prompt Marketplace
       });
     });
 
-    // Back to Top Button
-    window.addEventListener('scroll', function() {
-      if (window.scrollY > 300) {
-        document.body.classList.add('show-back-to-top');
-      } else {
-        document.body.classList.remove('show-back-to-top');
-      }
-    });
-
-    document.getElementById('backToTopBtn').addEventListener('click', function() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
   });
 </script>

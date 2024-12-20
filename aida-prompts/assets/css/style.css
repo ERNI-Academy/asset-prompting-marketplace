@@ -2,24 +2,31 @@
 
 /* Import Google Fonts */
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 /* CSS Variables for Theming */
 :root {
   --background-color: #FFFFFF;
-  --text-color: #2C2D3A; /* Dark Gray */
-  --primary-color: #5964E0; /* Modern Blue */
-  --secondary-color: #EFF0F6; /* Light Gray */
-  --accent-color: #2C2D3A; /* Dark Gray for Text */
+  --text-color: #3c3c3b; /* Main text color */
+  --primary-color: #033778; /* Dark Blue */
+  --secondary-color: #515455; /* Dark Grey */
+  --accent-color: #00aadb; /* Light Blue */
+  --highlight-color: #b1b0b1; /* Light Grey */
+  --navbar-background-color: var(--primary-color); /* Navbar background */
+  --navbar-text-color: #FFFFFF; /* Navbar text color */
 }
 
 /* Dark Mode Variables */
 body.dark-mode {
-  --background-color: #1e1e1e;
-  --text-color: #f0f0f0;
-  --primary-color: #9fa8b1;
-  --secondary-color: #2e2e2e;
+  --background-color: #033778; /* Use primary dark blue */
+  --text-color: #FFFFFF; /* All text in white */
+  --primary-color: #FFFFFF; /* White for primary elements */
+  --secondary-color: #FFFFFF; /* White for secondary elements */
+  --accent-color: #FFFFFF; /* White for accents */
+  --highlight-color: #b1b0b1; /* Light Grey (unchanged) */
+  --navbar-background-color: var(--background-color); /* Same as background */
+  --navbar-text-color: #FFFFFF; /* Navbar text color in dark mode */
 }
 
 /* Apply Variables */
@@ -30,39 +37,76 @@ body {
 
 /* Navbar */
 .navbar {
-  background-color: var(--background-color);
+  background-color: var(--navbar-background-color);
 }
 
 .navbar .navbar-brand {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  color: var(--text-color);
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 600; /* SemiBold */
+  color: var(--navbar-text-color);
 }
 
 .navbar .navbar-brand:hover {
-  color: var(--primary-color);
+  color: var(--accent-color);
 }
 
 .navbar-nav .nav-link {
-  color: var(--text-color);
+  color: var(--navbar-text-color);
 }
 
 .navbar-nav .nav-link:hover {
-  color: var(--primary-color);
+  color: var(--accent-color);
+}
+
+.navbar .btn-outline-secondary {
+  color: var(--navbar-text-color);
+  border-color: var(--navbar-text-color);
+}
+
+.navbar .btn-outline-secondary:hover {
+  background-color: var(--navbar-text-color);
+  color: var(--navbar-background-color);
 }
 
 /* Footer */
 footer {
   background-color: var(--secondary-color);
-  color: var(--text-color);
+  color: #FFFFFF; /* Set footer text color to white */
+  padding: 1rem 0;
 }
 
 footer a {
-  color: var(--text-color);
+  color: #FFFFFF; /* Set footer link color to white */
+  text-decoration: none; /* Remove underline */
 }
 
 footer a:hover {
-  color: var(--primary-color);
+  color: var(--accent-color);
+  text-decoration: none; /* Ensure underline doesn't appear on hover */
+}
+
+footer a i {
+  font-size: 1.5rem; /* Increase icon size for better visibility */
+  vertical-align: middle;
+}
+
+body.dark-mode footer {
+  background-color: var(--background-color); /* Keep same as dark mode background */
+  color: #FFFFFF;
+}
+
+body.dark-mode footer a {
+  color: #FFFFFF;
+  text-decoration: none; /* Remove underline */
+}
+
+body.dark-mode footer a:hover {
+  color: var(--accent-color);
+  text-decoration: none; /* Ensure underline doesn't appear on hover */
+}
+
+body.dark-mode footer a i {
+  color: #FFFFFF;
 }
 
 /* Prompt Cards */
@@ -75,24 +119,51 @@ footer a:hover {
 
 .card.prompt-box:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .card-title {
-  font-weight: 600;
-  font-family: 'Montserrat', sans-serif;
-  color: var(--text-color);
+  font-weight: 600; /* SemiBold */
+  font-size: 1.125rem; /* Approximately 18px */
+  color: var(--primary-color);
+}
+
+body.dark-mode .card-title {
+  color: var(--text-color); /* White text in dark mode */
 }
 
 .prompt-content .prompt-text {
   margin-top: 0.5rem;
-  font-size: 0.95rem;
-  line-height: 1.5;
+  font-weight: 400; /* Regular */
+  font-size: 0.875rem; /* Approximately 14px */
+  line-height: 1.6;
   color: var(--text-color);
 }
 
 .prompt-content .tags {
   margin-top: auto;
+}
+
+/* Badges */
+.badge.bg-primary {
+  background-color: var(--accent-color) !important;
+  color: #FFFFFF; /* White text */
+}
+
+.badge.bg-primary:hover {
+  background-color: var(--highlight-color) !important;
+  cursor: pointer;
+}
+
+/* Adjust tag badges in dark mode */
+body.dark-mode .badge.bg-primary {
+  background-color: #FFFFFF !important;
+  color: #033778 !important; /* Dark Blue text */
+}
+
+body.dark-mode .badge.bg-primary:hover {
+  background-color: var(--highlight-color) !important;
+  color: #033778 !important;
 }
 
 /* Buttons */
@@ -105,13 +176,27 @@ footer a:hover {
 .btn-primary {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
+  color: #FFFFFF;
 }
 
 .btn-primary:hover {
-  background-color: #4954C6;
-  border-color: #4954C6;
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
 }
 
+/* Dark Mode - Adjustments for Buttons in Modals */
+body.dark-mode .modal-footer .btn-primary {
+  background-color: #FFFFFF;
+  color: #033778;
+  border-color: #FFFFFF;
+}
+
+body.dark-mode .modal-footer .btn-primary:hover {
+  background-color: var(--highlight-color);
+  color: #033778;
+}
+
+/* Outline Buttons */
 .btn-outline-secondary {
   color: var(--primary-color);
   border-color: var(--primary-color);
@@ -119,32 +204,17 @@ footer a:hover {
 
 .btn-outline-secondary:hover {
   background-color: var(--primary-color);
-  color: #ffffff;
+  color: #FFFFFF;
 }
 
-/* Button Ripple Effect */
-.btn::after {
-  content: '';
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0;
-  pointer-events: none;
+body.dark-mode .btn-outline-secondary {
+  color: #FFFFFF;
+  border-color: #FFFFFF;
 }
 
-.btn:active::after {
-  opacity: 0.4;
-  transform: scale(10);
-  transition: opacity 0.6s, transform 0.6s;
-}
-
-/* Badges */
-.badge.bg-primary {
-  background-color: var(--primary-color) !important;
-}
-
-.badge.bg-primary:hover {
-  background-color: #4954C6 !important;
-  cursor: pointer;
+body.dark-mode .btn-outline-secondary:hover {
+  background-color: #FFFFFF;
+  color: var(--background-color);
 }
 
 /* Back to Top Button */
@@ -154,10 +224,30 @@ footer a:hover {
   right: 40px;
   display: none;
   z-index: 999;
+  background-color: var(--primary-color);
+  color: #FFFFFF;
+  border-color: var(--primary-color);
+}
+
+#backToTopBtn:hover {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
 }
 
 body.show-back-to-top #backToTopBtn {
   display: block;
+}
+
+/* Dark Mode - Back to Top Button Adjustments */
+body.dark-mode #backToTopBtn {
+  background-color: #FFFFFF;
+  color: #033778;
+  border-color: #FFFFFF;
+}
+
+body.dark-mode #backToTopBtn:hover {
+  background-color: var(--highlight-color);
+  color: #033778;
 }
 
 /* Plain Text */
@@ -176,6 +266,18 @@ body.show-back-to-top #backToTopBtn {
   opacity: 1;
 }
 
+.toast-body {
+  color: #FFFFFF;
+}
+
+.toast.bg-success {
+  background-color: var(--primary-color);
+}
+
+body.dark-mode .toast.bg-success {
+  background-color: var(--accent-color);
+}
+
 /* Transition Effects */
 .btn, .badge, .card.prompt-box {
   transition: background-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
@@ -183,7 +285,7 @@ body.show-back-to-top #backToTopBtn {
 
 /* Focus Styles */
 button:focus, a:focus {
-  outline: 2px solid var(--primary-color);
+  outline: 2px solid var(--accent-color);
   outline-offset: 2px;
 }
 
@@ -196,6 +298,11 @@ html {
 @media (max-width: 576px) {
   .prompt-box {
     padding: 0.75rem;
+  }
+
+  /* Adjust footer social icons for smaller screens */
+  footer a i {
+    font-size: 1.25rem;
   }
 }
 
@@ -213,10 +320,159 @@ html {
   z-index: 9999;
 }
 
-/* Hide the spinner when not needed */
 #loadingSpinner.hidden {
   display: none;
 }
 
-/* Adjustments for Accessibility */
-/* Ensure sufficient color contrast */
+/* Modal Styles */
+.modal-content {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border: none;
+}
+
+.modal-header,
+.modal-footer {
+  border: none;
+}
+
+.modal-header .btn-close {
+  filter: invert(0);
+}
+
+body.dark-mode .modal-header .btn-close {
+  filter: invert(1);
+}
+
+.modal-backdrop.show {
+  opacity: 0.8;
+}
+
+body.dark-mode .modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Additional Styles */
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 600; /* SemiBold */
+  color: var(--primary-color);
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6 {
+  color: #FFFFFF;
+}
+
+/* Adjusted Font Sizes Based on Hierarchy */
+h1 {
+  font-size: 2rem; /* Approximately 32px */
+}
+
+h2 {
+  font-size: 1.5rem; /* Approximately 24px */
+}
+
+h3 {
+  font-size: 1.375rem; /* Approximately 22px */
+}
+
+h4 {
+  font-size: 1.25rem; /* Approximately 20px */
+}
+
+h5 {
+  font-size: 1.125rem; /* Approximately 18px */
+}
+
+h6 {
+  font-size: 1rem; /* Approximately 16px */
+}
+
+/* Paragraphs */
+p, li {
+  font-size: 0.875rem; /* Approximately 14px */
+  line-height: 1.6;
+}
+
+/* Quotes */
+blockquote {
+  font-size: 1rem; /* Approximately 16px */
+  font-weight: 300; /* Light */
+  border-left: 4px solid var(--accent-color);
+  padding-left: 1rem;
+  color: var(--text-color);
+}
+
+body.dark-mode blockquote {
+  border-left-color: #FFFFFF;
+}
+
+/* Highlighted Text (if needed) */
+.highlight {
+  background-color: var(--highlight-color);
+  color: var(--text-color);
+}
+
+/* Links */
+a {
+  color: var(--primary-color);
+}
+
+a:hover {
+  color: var(--accent-color);
+}
+
+body.dark-mode a {
+  color: #FFFFFF;
+}
+
+body.dark-mode a:hover {
+  color: var(--accent-color);
+}
+
+/* Table Styling (if needed) */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  color: var(--text-color);
+}
+
+body.dark-mode th,
+body.dark-mode td {
+  border-bottom: 1px solid #FFFFFF;
+  color: #FFFFFF;
+}
+
+/* Images */
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
