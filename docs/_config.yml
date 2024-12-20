@@ -1,7 +1,7 @@
 title: "AIDA Prompt Marketplace"
 description: "A curated collection of AI prompts, easily searchable and shareable. Built with Jekyll and hosted on GitHub Pages."
 baseurl: "/asset-prompting-marketplace" # Adjust if using a subpath
-url: "erni-academy.github.io" # Adjust for production
+url: "https://erni-academy.github.io" # Adjust for production
 
 collections:
   prompts:
