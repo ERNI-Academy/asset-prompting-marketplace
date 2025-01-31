@@ -3,18 +3,20 @@ layout: default
 title: AIDA Prompt Marketplace
 ---
 
-<div class="container">
-
-  <!-- Header -->
-  <h1 class="my-5 text-center">{{ page.title }}</h1>
-
-  <!-- Search Input -->
+<div class="container main-content-container">
+  <!-- Search Input with new styling -->
   <div class="input-group mb-4">
-    <input type="text" id="searchInput" class="form-control" placeholder="Search prompts..." onkeyup="filterPrompts()">
-    <span class="input-group-text"><i class="bi bi-search"></i></span>
+    <input type="text" 
+           id="searchInput" 
+           class="form-control rounded-full" 
+           placeholder="Search prompts..." 
+           onkeyup="filterPrompts()">
+    <span class="input-group-text rounded-full">
+      <i class="bi bi-search"></i>
+    </span>
   </div>
 
-  <!-- Prompts Grid -->
+  <!-- Prompts Grid with new styling -->
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
     {% assign prompts = site.prompts | sort: 'title' %}
     {% for prompt in prompts %}
@@ -30,23 +32,22 @@ title: AIDA Prompt Marketplace
         {% assign prompt_content = prompt_raw_content %}
       {% endif %}
 
-      <!-- Prompt Card -->
+      <!-- Updated Prompt Card -->
       <div class="col">
         <div class="card h-100 prompt-box">
           <div class="card-body prompt-content d-flex flex-column">
             <div class="d-flex justify-content-between align-items-start mb-2">
               <h5 class="card-title">{{ prompt.title }}</h5>
-              <button class="btn btn-outline-secondary btn-sm copy-btn" title="Copy Prompt">
+              <button class="btn btn-outline-light btn-sm copy-btn" title="Copy Prompt">
                 <i class="bi bi-clipboard"></i>
               </button>
             </div>
-            <!-- Content that triggers the modal -->
             <div class="modal-trigger" data-bs-toggle="modal" data-bs-target="#promptModal{{ forloop.index }}">
-              <pre class="plain-text prompt-text">{{ prompt_content | xml_escape }}</pre>
+              <pre class="plain-text prompt-text">{{ prompt_content | strip | truncate: 200 }}</pre>
               {% if prompt.tags %}
                 <div class="tags mt-3">
                   {% for tag in prompt.tags %}
-                    <a href="#" class="badge bg-primary tag-filter" data-tag="{{ tag }}">{{ tag }}</a>
+                    <a href="#" class="badge bg-primary tag-filter" data-tag="{{ tag }}" onclick="event.stopPropagation();">{{ tag }}</a>
                   {% endfor %}
                 </div>
               {% endif %}
@@ -56,12 +57,12 @@ title: AIDA Prompt Marketplace
       </div>
 
       <!-- Prompt Modal -->
-      <div class="modal fade" id="promptModal{{ forloop.index }}" tabindex="-1" aria-labelledby="promptModalLabel{{ forloop.index }}" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal fade" id="promptModal{{ forloop.index }}" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="promptModalLabel{{ forloop.index }}">{{ prompt.title }}</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick='event.stopPropagation();'></button>
+              <h5 class="modal-title">{{ prompt.title }}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <pre class="plain-text prompt-text">{{ prompt_content | xml_escape }}</pre>
