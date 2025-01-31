@@ -590,7 +590,6 @@ img {
     rgba(37, 99, 235, 0.4), 
     rgba(126, 34, 206, 0.4), 
     rgba(244, 114, 182, 0.4));
-  backdrop-filter: blur(8px);
   border-radius: 1.5rem;
   margin: 4rem auto;
   padding: 4rem 1.5rem;
