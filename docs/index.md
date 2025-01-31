@@ -4,10 +4,6 @@ title: AIDA Prompt Marketplace
 ---
 
 <div class="container main-content-container">
-
-  <!-- Updated Header -->
-  <h1 class="text-4xl md:text-5xl font-bold text-white mb-16">{{ page.title }}</h1>
-
   <!-- Search Input with new styling -->
   <div class="input-group mb-4">
     <input type="text" 
@@ -62,7 +58,7 @@ title: AIDA Prompt Marketplace
 
       <!-- Prompt Modal -->
       <div class="modal fade" id="promptModal{{ forloop.index }}" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">{{ prompt.title }}</h5>
